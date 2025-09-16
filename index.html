@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Fundplay - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Loading spinner shown while JS initializes. It will be hidden by auth.js -->
+    <div id="loadingSpinner" class="loading-spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main app content, initially hidden, revealed by JavaScript when ready -->
+    <div id="app" class="app-container hidden"> 
+        <!-- New Top Hero Section -->
+        <section class="top-hero-section">
+            <div class="greeting-row">
+                <div>
+                    <h1 class="greeting-title" id="greeting-title">Hello there</h1> <!-- Initialized to generic -->
+                    <p class="greeting-subtitle">Let's play and win!</p>
+                </div>
+                <div class="header-icons" id="headerIconsWrapper"> <!-- Added ID for specific targeting -->
+                    <a href="announcement.html" class="notification-icon header-icon-btn" aria-label="View Announcements"> <!-- Added header-icon-btn class -->
+                        <i class="fas fa-bullhorn"></i>
+                    </a>
+                    <button id="logoutBtn" class="logout-btn header-icon-btn" aria-label="Logout"> <!-- Added header-icon-btn class -->
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="balance-details-row">
+                <div class="available-balance">
+                    <span class="balance-label">Available Balance</span>
+                    <strong class="balance-amount" id="current-balance-display">Rs. 0.00</strong> <!-- Initialized to 0.00 -->
+                </div>
+                <a href="add-cash.html" class="add-cash-btn">Add Cash</a>
+            </div>
+        </section>
+
+        <!-- Main Content Section (Popular Games) -->
+        <main class="main-content">
+            <h2 class="section-title">Popular Games</h2>
+
+            <div class="game-grid">
+                <!-- Game Card 1: Honda 70 CC Bike -->
+                <div class="game-card">
+                    <div class="image-wrapper"> <!-- New wrapper for images -->
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="2.png" alt="Honda 70 CC Bike" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">Honda 70 CC Bike</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.220k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="honda-bike" <!-- Unique ID for JS tracking -->
+                                data-game-title="Honda 70 CC Bike" 
+                                data-game-value="Rs.220k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+
+                <!-- Game Card 2: Latest Smartphone -->
+                <div class="game-card">
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="7.jpg" alt="Latest Smartphone" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">Latest Smartphone</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.150k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="smartphone" <!-- Unique ID for JS tracking -->
+                                data-game-title="Latest Smartphone" 
+                                data-game-value="Rs.150k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+                
+                <!-- Game Card 3: Gaming Console -->
+                 <div class="game-card">
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="4.jpg" alt="Gaming Console" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">Gaming Console</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.80k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="gaming-console" <!-- Unique ID for JS tracking -->
+                                data-game-title="Gaming Console" 
+                                data-game-value="Rs.80k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+
+                <!-- Game Card 4: Smartwatch -->
+                <div class="game-card">
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="7.jpg" alt="Smartwatch" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">Smartwatch</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.25k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="smartwatch"
+                                data-game-title="Smartwatch" 
+                                data-game-value="Rs.25k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+
+                <!-- Game Card 5: Wireless Earbuds -->
+                <div class="game-card">
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="1.jpg" alt="Wireless Earbuds" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">Wireless Earbuds</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.15k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="earbuds"
+                                data-game-title="Wireless Earbuds" 
+                                data-game-value="Rs.15k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+
+                <!-- Game Card 6: Drone -->
+                <div class="game-card">
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <img src="8.png" alt="High-End Drone" class="game-product-image">
+                    </div>
+                    <div class="game-details">
+                        <h3 class="game-title">High-End Drone</h3>
+                        <p class="game-value">Value <strong class="price-value">Rs.75k</strong></p>
+                        <button class="game-action-btn play-now-btn" type="button" 
+                                data-game-id="drone"
+                                data-game-title="High-End Drone" 
+                                data-game-value="Rs.75k"
+                                data-game-entry-fee="1.00">Play Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Confirm Entry Modal -->
+    <div class="modal-overlay" id="confirmEntryModal">
+        <div class="modal-content confirm-entry-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirm Entry</h2>
+                <button class="close-modal-btn header-icon-btn" aria-label="Close modal"><i class="fas fa-times"></i></button> <!-- Added header-icon-btn -->
+            </div>
+            <div class="modal-body">
+                <div class="game-summary">
+                    <div class="image-wrapper small-image-wrapper"> <!-- Image in modal summary -->
+                        <!-- REPLACE with your actual image URL for the specific game -->
+                        <img src="https://via.placeholder.com/60?text=Product" alt="Game Product Image" class="game-product-image" id="modal-product-image">
+                    </div>
+                    <div class="summary-details">
+                        <h3 class="summary-game-title" id="modal-game-title"></h3>
+                        <p class="summary-game-value">Value <span id="modal-game-value"></span></p>
+                    </div>
+                </div>
+
+                <div class="entry-details-row">
+                    <span>Entry Fee</span>
+                    <span class="detail-value" id="modal-entry-fee"></span>
+                </div>
+                <div class="entry-details-row">
+                    <span>Current Balance</span>
+                    <span class="detail-value" id="modal-current-balance"></span>
+                </div>
+                <div class="entry-details-row bold-row">
+                    <span>Balance After</span>
+                    <span class="detail-value" id="modal-balance-after"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn primary-action" id="confirm-pay-btn">Confirm & Pay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Successful Modal -->
+    <div class="modal-overlay" id="purchaseSuccessfulModal">
+        <div class="modal-content success-modal">
+            <div class="modal-body success-body">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="success-title">Purchase Successful!</h2>
+                <p class="success-message">Good luck!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn primary-action" id="awesome-btn">Awesome!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insufficient Balance Modal -->
+    <div class="modal-overlay" id="insufficientBalanceModal">
+        <div class="modal-content insufficient-modal">
+            <div class="modal-body">
+                <div class="insufficient-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h2 class="insufficient-title">Insufficient Balance</h2>
+                <p class="insufficient-message">You don't have enough funds to play this game. Please add cash to your account.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="add-cash.html" class="action-btn add-cash-from-modal-btn">Add Cash</a>
+                <button class="action-btn secondary-action close-modal-btn" data-modal-to-close="insufficientBalanceModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase Initialization and Auth Logic (order matters!) -->
+    <script type="module" src="firebase-init.js"></script>
+    <script type="module" src="auth.js"></script>
+    <!-- Your main application script (uses auth.js and firebase-init.js) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
