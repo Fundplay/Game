@@ -23,11 +23,11 @@
                     <h1 class="greeting-title" id="greeting-title">Hello there</h1> <!-- Initialized to generic -->
                     <p class="greeting-subtitle">Let's play and win!</p>
                 </div>
-                <div class="header-icons" id="headerIconsWrapper"> <!-- Added ID for specific targeting -->
-                    <a href="announcement.html" class="notification-icon header-icon-btn" aria-label="View Announcements"> <!-- Added header-icon-btn class -->
+                <div class="header-icons" id="headerIconsWrapper">
+                    <a href="announcement.html" class="notification-icon header-icon-btn" aria-label="View Announcements">
                         <i class="fas fa-bullhorn"></i>
                     </a>
-                    <button id="logoutBtn" class="logout-btn header-icon-btn" aria-label="Logout"> <!-- Added header-icon-btn class -->
+                    <button id="logoutBtn" class="logout-btn header-icon-btn" aria-label="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -49,59 +49,62 @@
             <div class="game-grid">
                 <!-- Game Card 1: Honda 70 CC Bike -->
                 <div class="game-card">
-                    <div class="image-wrapper"> <!-- New wrapper for images -->
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                    <div class="image-wrapper">
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
                         <img src="2.png" alt="Honda 70 CC Bike" class="game-product-image">
                     </div>
                     <div class="game-details">
                         <h3 class="game-title">Honda 70 CC Bike</h3>
                         <p class="game-value">Value <strong class="price-value">Rs.220k</strong></p>
                         <button class="game-action-btn play-now-btn" type="button" 
-                                data-game-id="honda-bike" <!-- Unique ID for JS tracking -->
+                                data-game-id="honda-bike"
                                 data-game-title="Honda 70 CC Bike" 
                                 data-game-value="Rs.220k"
-                                data-game-entry-fee="1.00">Play Now</button>
+                                data-game-entry-fee="100.00"
+                                data-game-image="2.png">Play Now</button>
                     </div>
                 </div>
 
                 <!-- Game Card 2: Latest Smartphone -->
                 <div class="game-card">
                     <div class="image-wrapper">
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
-                        <img src="7.jpg" alt="Latest Smartphone" class="game-product-image">
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
+                        <img src="3.jpg" alt="Latest Smartphone" class="game-product-image">
                     </div>
                     <div class="game-details">
                         <h3 class="game-title">Latest Smartphone</h3>
                         <p class="game-value">Value <strong class="price-value">Rs.150k</strong></p>
                         <button class="game-action-btn play-now-btn" type="button" 
-                                data-game-id="smartphone" <!-- Unique ID for JS tracking -->
+                                data-game-id="smartphone"
                                 data-game-title="Latest Smartphone" 
                                 data-game-value="Rs.150k"
-                                data-game-entry-fee="10.00">Play Now</button>
+                                data-game-entry-fee="1.00"
+                                data-game-image="3.jpg">Play Now</button>
                     </div>
                 </div>
                 
                 <!-- Game Card 3: Gaming Console -->
                  <div class="game-card">
                     <div class="image-wrapper">
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
                         <img src="4.jpg" alt="Gaming Console" class="game-product-image">
                     </div>
                     <div class="game-details">
                         <h3 class="game-title">Gaming Console</h3>
                         <p class="game-value">Value <strong class="price-value">Rs.80k</strong></p>
                         <button class="game-action-btn play-now-btn" type="button" 
-                                data-game-id="gaming-console" <!-- Unique ID for JS tracking -->
+                                data-game-id="gaming-console"
                                 data-game-title="Gaming Console" 
                                 data-game-value="Rs.80k"
-                                data-game-entry-fee="10.00">Play Now</button>
+                                data-game-entry-fee="1.00"
+                                data-game-image="4.jpg">Play Now</button>
                     </div>
                 </div>
 
                 <!-- Game Card 4: Smartwatch -->
                 <div class="game-card">
                     <div class="image-wrapper">
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
                         <img src="7.jpg" alt="Smartwatch" class="game-product-image">
                     </div>
                     <div class="game-details">
@@ -111,14 +114,15 @@
                                 data-game-id="smartwatch"
                                 data-game-title="Smartwatch" 
                                 data-game-value="Rs.25k"
-                                data-game-entry-fee="10.00">Play Now</button>
+                                data-game-entry-fee="50.00"
+                                data-game-image="7.jpg">Play Now</button>
                     </div>
                 </div>
 
                 <!-- Game Card 5: Wireless Earbuds -->
                 <div class="game-card">
                     <div class="image-wrapper">
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
                         <img src="1.jpg" alt="Wireless Earbuds" class="game-product-image">
                     </div>
                     <div class="game-details">
@@ -128,14 +132,15 @@
                                 data-game-id="earbuds"
                                 data-game-title="Wireless Earbuds" 
                                 data-game-value="Rs.15k"
-                                data-game-entry-fee="10.00">Play Now</button>
+                                data-game-entry-fee="50.00"
+                                data-game-image="1.jpg">Play Now</button>
                     </div>
                 </div>
 
                 <!-- Game Card 6: Drone -->
                 <div class="game-card">
                     <div class="image-wrapper">
-                        <!-- REPLACE with your actual image URL, e.g., src="https://firebasestorage.googleapis.com/..." -->
+                        <!-- REPLACE with your actual image URL, keep data-game-image up-to-date too -->
                         <img src="8.png" alt="High-End Drone" class="game-product-image">
                     </div>
                     <div class="game-details">
@@ -145,7 +150,8 @@
                                 data-game-id="drone"
                                 data-game-title="High-End Drone" 
                                 data-game-value="Rs.75k"
-                                data-game-entry-fee="10.00">Play Now</button>
+                                data-game-entry-fee="50.00"
+                                data-game-image="8.png">Play Now</button>
                     </div>
                 </div>
 
@@ -158,12 +164,12 @@
         <div class="modal-content confirm-entry-modal">
             <div class="modal-header">
                 <h2 class="modal-title">Confirm Entry</h2>
-                <button class="close-modal-btn header-icon-btn" aria-label="Close modal"><i class="fas fa-times"></i></button> <!-- Added header-icon-btn -->
+                <button class="close-modal-btn header-icon-btn" aria-label="Close modal"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <div class="game-summary">
-                    <div class="image-wrapper small-image-wrapper"> <!-- Image in modal summary -->
-                        <!-- REPLACE with your actual image URL for the specific game -->
+                    <div class="image-wrapper small-image-wrapper">
+                        <!-- Image in modal summary, its src will be set by JS -->
                         <img src="https://via.placeholder.com/60?text=Product" alt="Game Product Image" class="game-product-image" id="modal-product-image">
                     </div>
                     <div class="summary-details">
