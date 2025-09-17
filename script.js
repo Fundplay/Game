@@ -8,9 +8,6 @@ import { doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.
 
 console.log("script.js loaded.");
 
-// DOM elements should ideally be queried after `auth.js` has ensured content is present,
-// so directly in the module scope or functions they belong to is safer than global DOMContentLoaded here.
-
 // --- Common Modal Elements (for index.html) ---
 const confirmEntryModal = document.getElementById('confirmEntryModal');
 const purchaseSuccessfulModal = document.getElementById('purchaseSuccessfulModal');
@@ -26,6 +23,7 @@ const modalCurrentBalance = document.getElementById('modal-current-balance');
 const modalBalanceAfter = document.getElementById('modal-balance-after');
 const currentBalanceDisplay = document.getElementById('current-balance-display'); 
 const greetingTitle = document.getElementById('greeting-title'); 
+const modalProductImage = document.getElementById('modal-product-image'); // NEW: Get modal product image element
 
 // Global variable to hold the specific "Play Now" button that was clicked
 let currentPlayingGameButton = null;
@@ -71,8 +69,6 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 });
 
 // --- Game Play Logic (on index.html) ---
-// This code now runs as soon as `script.js` module is executed, but HTML will still be hidden initially.
-// We expect `window.currentUserData` to be populated by `auth.js` once auth state is resolved.
 if (window.location.pathname.includes('index.html')) { 
     console.log("Index.html specific scripts are running (script.js).");
     const playNowButtons = document.querySelectorAll('.game-action-btn.play-now-btn');
@@ -85,7 +81,13 @@ if (window.location.pathname.includes('index.html')) {
             const gameId = currentPlayingGameButton.dataset.gameId; 
             const gameTitle = currentPlayingGameButton.dataset.gameTitle;
             const gameValue = currentPlayingGameButton.dataset.gameValue;
-            const entryFee = parseFloat(currentPlayingGameButton.dataset.gameEntryFee);
+            // NEW: Robust entryFee parsing, default to 0 if not a number or missing
+            const rawEntryFee = currentPlayingGameButton.dataset.gameEntryFee;
+            const entryFee = parseFloat(rawEntryFee) || 0.00; // Defaults to 0 if NaN
+
+            // NEW: Get image URL for the modal
+            const gameImageSrc = currentPlayingGameButton.dataset.gameImage;
+
 
             const user = auth.currentUser;
             if (!user) {
@@ -96,6 +98,7 @@ if (window.location.pathname.includes('index.html')) {
 
             let currentBalance = window.currentUserData ? window.currentUserData.balance : 0;
             
+            // --- Pre-check balance before showing Confirm Entry modal ---
             if (currentBalance < entryFee) {
                 console.log("Insufficient balance detected (pre-check). Current:", currentBalance, "Fee:", entryFee);
                 hideModal(confirmEntryModal); 
@@ -112,6 +115,15 @@ if (window.location.pathname.includes('index.html')) {
             let balanceAfter = currentBalance - entryFee;
             modalBalanceAfter.textContent = `Rs. ${balanceAfter.toFixed(2)}`;
 
+            // NEW: Update modal's product image src
+            if (modalProductImage && gameImageSrc) {
+                modalProductImage.src = gameImageSrc;
+                modalProductImage.alt = gameTitle; // Also set alt text for accessibility
+            } else if (modalProductImage) { // Fallback if image not provided
+                 modalProductImage.src = "https://via.placeholder.com/60?text=Product";
+                 modalProductImage.alt = "Generic product image";
+            }
+
             confirmPayBtn.textContent = `Confirm & Pay Rs. ${entryFee.toFixed(2)}`;
             confirmPayBtn.dataset.entryFee = entryFee;
             confirmPayBtn.dataset.gameTitle = gameTitle;
@@ -124,7 +136,8 @@ if (window.location.pathname.includes('index.html')) {
 
     confirmPayBtn.addEventListener('click', async () => { 
         console.log("Confirm & Pay button clicked.");
-        const entryFee = parseFloat(confirmPayBtn.dataset.entryFee);
+        // NEW: Robust entryFee parsing from dataset (which should be number already)
+        const entryFee = parseFloat(confirmPayBtn.dataset.entryFee) || 0.00;
         const gameTitle = confirmPayBtn.dataset.gameTitle;
         const gameId = confirmPayBtn.dataset.gameId; 
 
@@ -194,95 +207,98 @@ if (window.location.pathname.includes('index.html')) {
 if (window.location.pathname.includes('add-cash.html')) {
     const addCashForm = document.querySelector('.add-cash-form');
     const copyButtons = document.querySelectorAll('.copy-btn');
+
     const paymentSubmittedModal = document.getElementById('paymentSubmittedModal');
     const submittedAmountDisplay = document.getElementById('submitted-amount-display');
-    const submittedOkBtn = document.getElementById('submitted-ok-btn');
+    const submittedOkBtn = document.getElementById('submitted-ok-btn'); 
 
-    console.log("Add-cash.html specific scripts are running (script.js).");
+    if (addCashForm) { 
+        console.log("Add-cash.html specific scripts are running (script.js).");
 
-    copyButtons.forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const targetId = event.currentTarget.dataset.target;
-            const textToCopy = document.getElementById(targetId).textContent;
+        copyButtons.forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const targetId = event.currentTarget.dataset.target;
+                const textToCopy = document.getElementById(targetId).textContent;
+
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    console.log('Text copied to clipboard:', textToCopy);
+                    
+                    const originalIcon = event.currentTarget.querySelector('.fas').className;
+                    event.currentTarget.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    event.currentTarget.classList.add('copied');
+
+                    setTimeout(() => {
+                        event.currentTarget.innerHTML = `<i class="${originalIcon}"></i>`;
+                        event.currentTarget.classList.remove('copied');
+                    }, 1500);
+                    
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy number. Please try manually.');
+                }
+            });
+        });
+
+        addCashForm.addEventListener('submit', async (event) => { 
+            event.preventDefault(); 
+            console.log("Add Cash form submitted.");
+
+            const amount = parseFloat(document.getElementById('amount').value); 
+            const senderAccountName = document.getElementById('sender-account-name').value;
+            const senderAccountNumber = document.getElementById('sender-account-number').value;
+            const transactionId = document.getElementById('transaction-id').value;
+
+            if (!amount || !senderAccountName || !senderAccountNumber || !transactionId) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) {
+                alert("You must be logged in to submit a payment request.");
+                console.log("User not logged in for add cash submission, redirecting to login.");
+                window.location.href = 'login.html';
+                return;
+            }
 
             try {
-                await navigator.clipboard.writeText(textToCopy);
-                console.log('Text copied to clipboard:', textToCopy);
-                
-                const originalIcon = event.currentTarget.querySelector('.fas').className;
-                event.currentTarget.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                event.currentTarget.classList.add('copied');
+                await addDoc(collection(db, "paymentRequests"), {
+                    "Account name": senderAccountName,
+                    "Account number": senderAccountNumber,
+                    Amount: amount, 
+                    "Payment request": "Pending", 
+                    "Transaction ID": transactionId,
+                    "Requested By UID": user.uid, 
+                    "Request Time": new Date() 
+                });
 
-                setTimeout(() => {
-                    event.currentTarget.innerHTML = `<i class="${originalIcon}"></i>`;
-                    event.currentTarget.classList.remove('copied');
-                }, 1500);
-                
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                alert('Failed to copy number. Please try manually.');
+                console.log('Add Cash Request Submitted to Firestore:', {
+                    amount, senderAccountName, senderAccountNumber, transactionId, requestedBy: user.uid
+                });
+
+                if (submittedAmountDisplay) { submittedAmountDisplay.textContent = amount.toFixed(2); }
+                showModal(paymentSubmittedModal);
+                addCashForm.reset(); 
+                console.log("Payment Submitted modal shown, form reset.");
+            } catch (error) {
+                console.error("Error submitting payment request to Firestore:", error);
+                alert("Failed to submit payment request. Please try again.");
             }
         });
-    });
 
-    addCashForm.addEventListener('submit', async (event) => { 
-        event.preventDefault(); 
-        console.log("Add Cash form submitted.");
-
-        const amount = parseFloat(document.getElementById('amount').value); 
-        const senderAccountName = document.getElementById('sender-account-name').value;
-        const senderAccountNumber = document.getElementById('sender-account-number').value;
-        const transactionId = document.getElementById('transaction-id').value;
-
-        if (!amount || !senderAccountName || !senderAccountNumber || !transactionId) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        const user = auth.currentUser;
-        if (!user) {
-            alert("You must be logged in to submit a payment request.");
-            console.log("User not logged in for add cash submission, redirecting to login.");
-            window.location.href = 'login.html';
-            return;
-        }
-
-        try {
-            await addDoc(collection(db, "paymentRequests"), {
-                "Account name": senderAccountName,
-                "Account number": senderAccountNumber,
-                Amount: amount, 
-                "Payment request": "Pending", 
-                "Transaction ID": transactionId,
-                "Requested By UID": user.uid, 
-                "Request Time": new Date() 
+        if (submittedOkBtn) {
+            submittedOkBtn.addEventListener('click', () => {
+                hideModal(paymentSubmittedModal);
+                console.log("Payment Submitted modal hidden by OK button.");
             });
-
-            console.log('Add Cash Request Submitted to Firestore:', {
-                amount, senderAccountName, senderAccountNumber, transactionId, requestedBy: user.uid
-            });
-
-            if (submittedAmountDisplay) { submittedAmountDisplay.textContent = amount.toFixed(2); }
-            showModal(paymentSubmittedModal);
-            addCashForm.reset(); 
-            console.log("Payment Submitted modal shown, form reset.");
-        } catch (error) {
-            console.error("Error submitting payment request to Firestore:", error);
-            alert("Failed to submit payment request. Please try again.");
         }
-    });
-
-    if (submittedOkBtn) {
-        submittedOkBtn.addEventListener('click', () => {
-            hideModal(paymentSubmittedModal);
-            console.log("Payment Submitted modal hidden by OK button.");
-        });
     }
 }
 
 
 // --- Announcement Page Logic (on announcement.html) ---
 if (window.location.pathname.includes('announcement.html')) {
-    // No specific script.js logic needed yet, auth.js handles display
     console.log("Announcement.html specific scripts are running (script.js).");
+    // No specific script.js logic needed yet for the announcements content itself
 }
